@@ -3728,7 +3728,7 @@ inline T test_case_406(const T& x)
 {
    BOOST_MATH_STD_USING
    log_test_call(x);
-   return x / sin(x);
+   return x == 0 ? 1 : x / sin(x);
 }
 
 
@@ -6033,7 +6033,7 @@ inline T test_case_662(const T& x)
    BOOST_MATH_STD_USING
    log_test_call(x);
    // x^(-x)^((-3/10)*(-LN(x))^(-7/10))
-   return pow(x,  pow(-x, ((T(-3) / 10) * pow(-log(x), T(-7) / 10))));
+   return pow(pow(x, -x), ((T(-3) / 10) * pow(-log(x), T(-7) / 10)));
 }
 
 
