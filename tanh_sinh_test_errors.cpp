@@ -115,6 +115,8 @@ int main()
       calls = 0;
    }
 #ifdef TEST_QTHSH
+
+   std::cout << "\n\nTesting qthsh at " << tolerance << std::endl << std::endl;
    std::cout << "\n\n   N                   Result    #Calls  ErrorEstimate     ErrorFound\n";
    index = 1;
 
@@ -122,6 +124,32 @@ int main()
    {
       try {
          double result = qthsh(pos->proc, pos->a, pos->b, 15, tolerance, &error);
+         std::cout << std::setw(4) << std::right << index
+            << std::setw(25) << std::scientific << std::right << std::setprecision(17) << result
+            << std::setw(10) << std::right << calls
+            << std::setw(15) << std::right << std::setprecision(4) << error
+            << std::setw(15) << std::right << std::setprecision(4) << boost::math::relative_difference(result, pos->exact_result) << std::endl;
+      }
+      catch (const boost::math::evaluation_error&)
+      {
+         std::cout << std::setw(4) << std::right << index
+            << std::right << std::setw(20) << "EXCEPTION!!" << std::endl;
+      }
+      calls = 0;
+   }
+   //
+   // Internally, qthsh multiplies the tolerance by 10 to obtain a termination condition.
+   // Boost just uses tolerance directly as the termination condition.
+   // So add this comparison to level up the playing field and compare like with like:
+   //
+   std::cout << "\n\nTesting qthsh at " << (tolerance / 10) << std::endl << std::endl;
+   std::cout << "\n\n   N                   Result    #Calls  ErrorEstimate     ErrorFound\n";
+   index = 1;
+
+   for (const test_entry* pos = p.first; pos != p.second; ++pos, ++index)
+   {
+      try {
+         double result = qthsh(pos->proc, pos->a, pos->b, 15, tolerance / 10, &error);
          std::cout << std::setw(4) << std::right << index
             << std::setw(25) << std::scientific << std::right << std::setprecision(17) << result
             << std::setw(10) << std::right << calls
