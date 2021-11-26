@@ -21,6 +21,8 @@ along with this program.If not, see < https://www.gnu.org/licenses/>.
 
 */
 
+#ifndef TANH_SINH_TEST_CASES_HPP
+#define TANH_SINH_TEST_CASES_HPP
 
 #include <boost/math/tools/config.hpp>
 #include <boost/math/constants/constants.hpp>
@@ -1774,7 +1776,7 @@ inline T test_case_189(const T& x)
 {
    BOOST_MATH_STD_USING
    log_test_call(x);
-   // x^4*(1-x)^4/(1+x^2)
+   // (x^2-x)^2/(x^3-3*x+1)^2
    return boost::math::pow<2>((boost::math::pow<2>(x) - x)) / boost::math::pow<2>((boost::math::pow<3>(x) - 3 * x + 1));
 }
 
@@ -1802,7 +1804,7 @@ inline T test_case_192(const T& x)
 {
    BOOST_MATH_STD_USING
    log_test_call(x);
-   return 1 / 4 / log(2) * log((1 + x) / (1 - x));
+   return log((1 + x) / (1 - x)) / (4 * ln_two<T>());
 }
 
 
@@ -2027,7 +2029,7 @@ inline T test_case_217(const T& x)
 {
    BOOST_MATH_STD_USING
    log_test_call(x);
-   return 1 / 4 / log(2) * log((1 + x) / (1 - x));
+   return log((1 + x) / (1 - x)) / (4 * ln_two<T>());
 }
 
 
@@ -3611,7 +3613,7 @@ inline T test_case_393(const T& x)
 {
    BOOST_MATH_STD_USING
    log_test_call(x);
-   return log(1 + cos(x) / 2) / cos(x);
+   return log1p(cos(x) / 2) / cos(x);
 }
 
 
@@ -7440,4 +7442,25 @@ inline T test_case_818(const T& x)
    return x / (1 + boost::math::pow<6>(x) * boost::math::pow<2>((sinh(x))));
 }
 
+/****************************************************************************************************************
+*
+* Special function based test cases, starting with Direc delta type functions:
+* 
+*****************************************************************************************************************/
 
+template <class T>
+inline T test_case_dirac_1(const T& x, const T& a)
+{
+   BOOST_MATH_STD_USING
+   log_test_call(x);
+   return exp(-boost::math::pow<2>(x / a)) / (a * boost::math::constants::root_pi<T>());
+}
+
+template <class T>
+inline T test_case_819(const T& x)
+{
+   return test_case_dirac_1(x, 0.125);
+}
+
+
+#endif // TANH_SINH_TEST_CASES_HPP
